@@ -48,7 +48,6 @@ public String toString(String usedFor) {
 		}
 		break;
 	}
-
 	return res;
 }
 

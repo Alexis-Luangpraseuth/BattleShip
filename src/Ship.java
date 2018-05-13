@@ -39,32 +39,10 @@ public class Ship {
 		List<Square> squares = this.getSquares();
 		for(int j=0;j<squares.size();j++) {
 			Square square = squares.get(j);
-			if(square.isHit())
+			if(!square.isHit())
 				res = false;
 		}
 		return res;
-	}
-
-	public String getName() {
-		String res;
-		switch (this.coordinates.size()) {
-		case 2:
-			res = "Destroyer";
-			break;
-		case 3:
-			res = "Submarine";
-			break;
-		case 4:
-			res = "Battleship";
-			break;
-		case 5:
-			res = "Carrier";
-			break;
-		default:
-			res = "Error";
-		}
-		return res;
-
 	}
 
 }

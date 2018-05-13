@@ -31,16 +31,19 @@ public Grid() {
 
 public String toString(String usedFor) {
 	String res ="";
-	res += " ";
+	res += "S=ship,W=water,?=unknown,H=shot hit,M= shot miss \n \n";
+	res += "   ";
 	char start = 'A';
 	for(int i=0;i<coordMax;i++) {
 		res+= start;
 		start += 1;
-		
 	}
 	res += "\n";
 	for(int i=0;i<coordMax;i++) {
-		res += i+1;
+		if(i<9)
+			res += i+1 +"  ";
+		else
+			res += i+1 +" ";
 		for(int j=0;j<coordMax;j++) {
 			
 			res += grid[i][j].toString(usedFor);
