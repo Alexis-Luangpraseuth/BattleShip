@@ -1,11 +1,9 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
+
 
 public class Grid {
- private Square[][] grid; 
- 
+
+private Square[][] grid; 
+static final  int coordMax = 10; 
  
  
  public Square[][] getGrid() {
@@ -22,33 +20,30 @@ public void setGrid(Square[][] grid) {
 
 public Grid() {
 		
-		grid = new Square[10][10];
-		for(int i=0; i<10 ; i++) {
-			for(int j=0; j<10 ; j++) {
-				grid[i][j] = new Square(Color.white,0);
+		grid = new Square[coordMax][coordMax];
+		for(int i=0; i<coordMax ; i++) {
+			for(int j=0; j<coordMax ; j++) {
+				grid[i][j] = new Square(Color.blue,false);
 			}
 		}
  }
 
 
-public String EnnemyGridToString() {
+public String toString(String usedFor) {
 	String res ="";
-	for(int i=0;i<10;i++) {
-		for(int j=0;j<10;j++) {
-			
-			res += grid[i][j].toStringEnnemy();
-		}
-		res += "\n";
+	res += " ";
+	char start = 'A';
+	for(int i=0;i<coordMax;i++) {
+		res+= start;
+		start += 1;
+		
 	}
-	return res;
-}
-
-public String MyGridToString() {
-	String res ="";
-	for(int i=0;i<10;i++) {
-		for(int j=0;j<10;j++) {
+	res += "\n";
+	for(int i=0;i<coordMax;i++) {
+		res += i+1;
+		for(int j=0;j<coordMax;j++) {
 			
-			res += grid[i][j].toStringFriend();
+			res += grid[i][j].toString(usedFor);
 		}
 		res += "\n";
 	}

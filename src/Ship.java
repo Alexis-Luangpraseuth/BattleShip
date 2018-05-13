@@ -1,37 +1,18 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
+
 
 public class Ship {
-	private String startCoord;
-	private String endCoord;
 	private List<String> coordinates = new ArrayList<String>();
+	List<Square> squares = new ArrayList<Square>();
 
-	public Ship(String startCoord, String endCoord) {
 
-		this.startCoord = startCoord;
-		this.endCoord = endCoord;
-		String letterStartCoord = startCoord.substring(0,0);
-		String letterEndCoord = endCoord.substring(0,0);
-		String intStartCoord = startCoord.substring(1);
-		String intEndCoord = endCoord.substring(1);
-		
-		if(letterStartCoord.equals(letterEndCoord)) {
-			for(int i = Integer.parseInt(intStartCoord); i <= Integer.parseInt(intEndCoord); i++)
-			{
-			 coordinates.add(letterStartCoord+ Integer.toString(i));
-			}
-		}
-		else
-		{
-			for(char i = letterStartCoord.charAt(0); i <= letterEndCoord.charAt(0); i++)
-			{
-			 coordinates.add(i+ intStartCoord);
-			}	
-		}
+	public Ship(List<String> coordinates, List<Square> squares) {
+		this.coordinates = coordinates;
+		this.squares = squares;
 	}
 
+	
 	public List<String> getCoordinates() {
 		return coordinates;
 	}
@@ -40,14 +21,27 @@ public class Ship {
 		this.coordinates = coordinates;
 	}
 
-	public boolean isHit(String missileCoord) {
-		boolean res = false;
+	public List<Square> getSquares() {
+		return squares;
+	}
 
+	public void setSquares(List<Square> squares) {
+		this.squares = squares;
+	}
+
+	public boolean isHit(Square target) {
+		boolean res = squares.contains(target)?  true : false;
 		return res;
 	}
 
 	public boolean isDestroyed() {
-		boolean res = false;
+		boolean res = true;
+		List<Square> squares = this.getSquares();
+		for(int j=0;j<squares.size();j++) {
+			Square square = squares.get(j);
+			if(square.isHit())
+				res = false;
+		}
 		return res;
 	}
 

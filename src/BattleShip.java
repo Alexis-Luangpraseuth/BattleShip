@@ -1,58 +1,89 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Scanner;
 
 public class BattleShip {
-	public static int coordMax = 9;
-	
+	public static int coordMax = 10;
+
 	public static Scanner reader = new Scanner(System.in);
 
 	public static char getLetter(String coordinate) {
 		char res = coordinate.charAt(0);
 		return res;
 	}
-	
+
 	public static int getInt(String coordinate) {
 		String intStartCoord = coordinate.substring(1);
-		int res = Integer.parseInt(intStartCoord) -1;
+		int res = Integer.parseInt(intStartCoord) - 1;
 		return res;
 	}
-	
+
 	public static boolean isInGridCoordinate(String coordinate) {
 		boolean res = false;
+		String error = "";
 		int longitude = convertLetterToInt(getLetter(coordinate));
 		int latitude = getInt(coordinate);
+		if (longitude >= 0 && longitude < coordMax && latitude >= 0 && latitude < coordMax)
+			res = true;
+		else
+			error = "One of those positions is already taken by another ship";
+		if (res == false)
+			System.out.println(error);
 		return res;
 	}
-	
-	public static boolean coordinatesAreAvaible(String startCoord,String endCoord,String shipName,Player player) {
+
+	public static boolean coordinatesAreAvaible(String startCoord, String endCoord, String shipName, Grid grid) {
 		boolean res = true;
-		List<String> coordinates = new ArrayList<String>();
+		String error = "";
 		char startLetter = getLetter(startCoord);
 		char endLetter = getLetter(endCoord);
 		int startInt = getInt(startCoord);
 		int endInt = getInt(endCoord);
+		int size = 0;
 		switch (shipName) {
 		case "Destroyer":
-			
+			size = 2;
 			break;
 		case "Submarine":
-			
+			size = 3;
 			break;
 		case "Battleship":
-			
+			size = 4;
 			break;
 		case "Carrier":
-			
+			size = 5;
 			break;
 		default:
 			res = false;
 		}
+
+		if (startLetter == endLetter) {
+			if (startInt == endInt - size) {
+				for (int k = startInt; k <= endInt; k++) {
+					int lat = convertLetterToInt(startLetter);
+					Square square = grid.getGrid()[lat][k];
+					if (square.getColor() == Color.red) {
+						res = false;
+						error = "One of those positions is already taken by another ship";
+					}
+				}
+			}
+		} else if (startLetter == endLetter - size) {
+			for (char k = startLetter; k <= endLetter; k++) {
+				int lat = convertLetterToInt(k);
+				Square square = grid.getGrid()[lat][startInt];
+				if (square.getColor() == Color.red)
+					res = false;
+
+			}
+		} else {
+			error = "You did not put the correct size for this ship";
+		}
+		if (res == false)
+			System.out.println(error);
 		return res;
 	}
-	
+
 	private static int convertLetterToInt(char val) {
 		int res = -1;
 		switch (val) {
@@ -97,136 +128,160 @@ public class BattleShip {
 	public static void main(String args[]) {
 
 		Game game = new Game();
-		Scanner in = new Scanner(System.in);
+		String winner = "";
 
 		Player player1 = new Player();
 		Player player2 = new Player();
-		
+
 		game.setActivePlayer(player1);
 		game.setOppositePlayer(player2);
-		
+
 		Grid gridPlayer1 = new Grid();
 		Grid gridPlayer2 = new Grid();
-		
+
 		player1.setMyGrid(gridPlayer1);
 		player1.setEnnemyGrid(gridPlayer2);
-		
+
 		player2.setMyGrid(gridPlayer2);
 		player2.setEnnemyGrid(gridPlayer1);
-		
-		for(int i = 1; i <= 2; i++) {
-			System.out.println("Player " + i + " you are going to place your ship");
+		List<Player> players = new ArrayList<Player>();
+		players.add(player1);
+		players.add(player2);
+		for (int i = 1; i <= players.size(); i++) {
+			Player player = players.get(i);
+			System.out.println("player " + i + " : choose your name");
+			player.setName(reader.next());
+			String playerName = player.getName();
+			List<Ship> fleet = new ArrayList<Ship>();
+			System.out.println(playerName + " you are going to place your fleet");
 			List<String> battlecrew = new ArrayList<String>();
 			battlecrew.add("Destroyer");
 			battlecrew.add("Submarine");
 			battlecrew.add("Battleship");
 			battlecrew.add("Carrier");
-			for(int j=0;j<battlecrew.size();i++) {
-			String shipName = battlecrew.get(i);
-			boolean check = false;
-			while(!check) {
-			System.out.println("give start coordinates for your " + shipName +"("+ j+2 +" squares), 'A1' to 'J10' exemple: 'A1'");
-			String coordS = reader.next();
-			if(isInGridCoordinate(coordS)) {
-				System.out.println("give end coordinates for your " + shipName + "( "+ j+2 + " squares), exemple: 'A3'");
-				String coordE = reader.next();
-				if(isInGridCoordinate(coordE)) {
-					
-				}
-			}
-			}
-			}
-		}
-		
-		while (!game.isOver()) {
-			// demande des coordonnées du tir
-			System.out.println("Voici la carte de vos tirs");
-			player1.showGrilleTir();
-			System.out.println(player1.getPlayername() + " ,choisissez une position à attaquer(exemple:"+Config.limittop + Config.limitright+","+Config.limitbottom+Config.limitright);
-			System.out.println("Coordonnée du tir :");
-			shoot = reader.next();
-			// si le joueur tir sur une case déjé essayée on lui redemande des coordonnées
-			while (newgame.ActivePlayer.hasAlreadyShot(shoot) || (!newgame.Grille.contains(shoot))) {
-				System.out.println(player1.getPlayername()
-						+ " ,choisissez une nouvelle position, vous avez déjé attaqué ici ou la position n'est pas valide ! ");
-				System.out.println("Coordonnée du tir :");
-				shoot = reader.next();
-			}
-			newgame.ActivePlayer.myShoots.add(shoot);
-			newgame.ActivePlayer.updatemap(shoot, 0);
-			System.out.println(newgame.ActivePlayer.myShoots);
-			// on instancie le crew du joueur adverse pour savoir si on touche
-			battlecrew = newgame.OppositePlayer.getBattlecrew();
-			int i = 0;
-			String res = "A l'eau";
-			Ship ship;
-			// on boucle tant qu'il y a des bateaux dans la liste et que l'on a pas tout
-			// parcouru
-			// et qu'on ne touche pas
-			while ((i < (newgame.OppositePlayer.length())) && (res.equals("A l'eau"))) {
-				ship = battlecrew.get(i);
-				// System.out.println(ship);
-				// si c'est touché
-				if (ship.isHit(shoot)) {
-					ship.removepos(shoot);
-					newgame.ActivePlayer.updatemap(shoot, 1);
-					// on regarde si c'est coulé
-					if (ship.isDestroyed()) {
-						res = "Touché Coulé";
-						newgame.OppositePlayer.removeShip(ship);
-					} else {
-						res = "Touché";
-					}
-				}
-				i = i + 1;
-			}
-			System.out.println("C'est : " + res);
-			// newgame.changePlayer();
-			if (!newgame.IsOver()) {
-				System.out.println("C'est à l'ordinateur de jouer : ");
-				shoot = player2.shoot(newgame);
-				newgame.OppositePlayer.myShoots.add(shoot);
-				System.out.println("l'ordinateur a frappé en " + shoot);
-				battlecrew = newgame.ActivePlayer.getBattlecrew();
-				i = 0;
-				res = "A l'eau";
-				while ((i < (newgame.ActivePlayer.length())) && (res.equals("A l'eau"))) {
-					ship = battlecrew.get(i);
-					// System.out.println(ship);
-					// si c'est touché
-					if (ship.isHit(shoot)) {
-						player2.setState("tir");
-						ship.removepos(shoot);
-						// on regarde si c'est coulé
-						if (ship.isDestroyed()) {
-							res = "Touché Coulé";
-							player2.setCurrentboat(new ArrayList<String>());
-							newgame.ActivePlayer.removeShip(ship);
-							player2.setState("chasse");
-							player2.setDirstate("haut");
-						} else {
-							res = "Touché";
-							player2.getCurrentboat().add(shoot);
+			for (int j = 0; j < battlecrew.size(); j++) {
+				String shipName = battlecrew.get(j);
+				boolean check = false;
+				while (!check) {
+					System.out.println("give start coordinates for your " + shipName + "(" + j + 2
+							+ " squares), 'A1' to 'J10' exemple: 'A1'");
+					String coordS = reader.next();
+					if (isInGridCoordinate(coordS)) {
+						System.out.println("give end coordinates for your " + shipName + "( " + j + 2
+								+ " squares), exemple: 'A3'");
+						String coordE = reader.next();
+						if (isInGridCoordinate(coordE)) {
+							Grid grid = player.getMyGrid();
+							if (coordinatesAreAvaible(coordS, coordE, shipName, grid)) {
+								check = true;
+								List<String> coordinates = new ArrayList<String>();
+								List<Square> squares = new ArrayList<Square>();
+								char letterStartCoord = coordS.charAt(0);
+								char letterEndCoord = coordE.charAt(0);
+								int intStartCoord = getInt(coordS);
+								int intEndCoord = getInt(coordE);
+
+								if (letterStartCoord == letterEndCoord) {
+									for (int k = intStartCoord; k <= intEndCoord; k++) {
+										coordinates.add(letterStartCoord + Integer.toString(k + 1));
+										int lat = convertLetterToInt(letterStartCoord);
+										player.getMyGrid().getGrid()[lat][k - 1].setColor(Color.red);
+										squares.add(player.getMyGrid().getGrid()[lat][k]);
+									}
+								} else {
+									for (char k = letterStartCoord; k <= letterEndCoord; k++) {
+										coordinates.add(k + Integer.toString(intStartCoord + 1));
+										int lat = convertLetterToInt(k);
+										player.getMyGrid().getGrid()[lat][intStartCoord].setColor(Color.red);
+										squares.add(player.getMyGrid().getGrid()[lat][intStartCoord]);
+									}
+								}
+
+								Ship ship = new Ship(coordinates, squares);
+
+								fleet.add(ship);
+								if (j == 3)
+									player.setFleet(fleet);
+							}
 						}
 					}
-					i = i + 1;
 				}
-				System.out.println("C'est : " + res);
-				System.out.println("Fin du tour de l'ordinateur");
 			}
 		}
-		// on regarde qui a gagné et qui a perdu
-		if (newgame.ActivePlayer.length() == 0) {
-			System.out.println(player2.getPlayername() + " a gagné");
-		} else {
-			System.out.println(player1.getPlayername() + " a gagné");
-		}
-		System.out.println("Voulez faire une nouvelle partie ? oui/non");
-		avis = reader.next();
-	}
-	System.out.println("Session terminée");
-}
 
-}
+		while (!game.isOver()) {
+			Player activePlayer = game.getActivePlayer();
+			Player oppositePlayer = game.getOppositePlayer();
+			Grid activePlayerGrid = activePlayer.getMyGrid();
+			Grid oppositePlayerGrid = activePlayer.getEnnemyGrid();
+			String activePlayerName = activePlayer.getName();
+
+			System.out.println(activePlayerName + " it is your turn to play");
+
+			// showing our battlefield and opponent battlefield
+			System.out.println("This is your battlefield :");
+			System.out.println(activePlayerGrid.toString("ally"));
+			System.out.println("This is your ennemy battlefield :");
+			System.out.println(oppositePlayerGrid.toString("opponent"));
+
+			System.out.println("Choose a target for your next attack. Exemple: 'A1'");
+			System.out.println("Target :");
+			String target = reader.next();
+			// If the target is not in the battlefield or already attacked, the player needs
+			// to put a new target
+			int lat = convertLetterToInt(getLetter(target));
+			int longitude = getInt(target);
+
+			while (oppositePlayerGrid.getGrid()[lat][longitude].isHit() || !(isInGridCoordinate(target))) {
+				System.out.println("The target was out of range or already attacked, choose a new target: ");
+				System.out.println("Target :");
+				target = reader.next();
+			}
+			Square squareAttacked = oppositePlayerGrid.getGrid()[lat][longitude];
+			squareAttacked.setHit(true);
+			String res = "";
+			List<Ship> fleet = oppositePlayer.getFleet();
+			// checking if a ship as been touched
+			if (squareAttacked.getColor() == Color.red) {
+				// We check if the ship is destroyed or not
+
+				int i = 0;
+				boolean shipFound = false;
+				while (i < fleet.size() && shipFound == false) {
+					Ship ship = fleet.get(i);
+					if (ship.isHit(squareAttacked)) {
+						shipFound = true;
+						if (!ship.isDestroyed())
+							res = "Hit!";
+					}
+				}
+			} else {
+				res = "Missed!";
+			}
+			if (res.equals("")) {
+				res = "Sunk!";
+				int i = 0;
+				boolean shipFound = false;
+				while (i < fleet.size() && shipFound == false) {
+					Ship ship = fleet.get(i);
+					shipFound = true;
+					if (!ship.isDestroyed()) {
+						shipFound = true;
+					}
+				}
+				if (shipFound == false) {
+					game.setOver(true);
+					winner = activePlayerName;
+
+				}
+				System.out.println("result: " + res);
+				game.switchActivePlayer();
+
+			}
+
+		}
+		System.out.println(
+				"Congratulation" + winner + ", the game is over, you have destroyed the whole fleet of your opponent");
+	}
 
 }

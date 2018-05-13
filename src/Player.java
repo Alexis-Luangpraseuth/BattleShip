@@ -6,7 +6,14 @@ public class Player {
 	private List<Ship> fleet = new ArrayList<Ship>();
 	private Grid myGrid;
 	private Grid ennemyGrid;
+	private String name;
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public List<Ship> getFleet() {
 		return fleet;
 	}

@@ -1,13 +1,11 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
+
 
 public class Square {
-// red = ship   blue = no ship   white = unknown
+	
+// red = ship   blue = no ship   
 private Color color;
 // 0 = no hit    1 = hit
-private int status;
+private boolean hit;
 
 
 public Color getColor() {
@@ -16,39 +14,41 @@ public Color getColor() {
 public void setColor(Color color) {
 	this.color = color;
 }
-public int getStatus() {
-	return status;
+public boolean isHit() {
+	return hit;
 }
-public void setStatus(int status) {
-	this.status = status;
+public void setHit(boolean hit) {
+	this.hit = hit;
 }
 
-public Square(Color color, int status) {
+public Square(Color color, boolean hit) {
 	super();
 	this.color = color;
-	this.status = status;
+	this.hit = hit;
 }
 
-public String toStringEnnemy() {
-	String res="~";
-	if(status==0) {
-		res="m";
+public String toString(String usedFor) {
+	String res ="";
+	
+	switch (usedFor) {
+	case "ally":
+		if(hit==false) {
+			res = color == Color.red? "S":"W";
+		}
+		else if(hit==true) {
+			res = color == Color.red? "H":"M";
+		}
+		break;
+	case "opponent":
+		if(hit==false) {
+			res = "?";
+		}
+		else if(hit==true) {
+			res = color == Color.red? "H":"M";
+		}
+		break;
 	}
-	if(status==1) {
-		res="x";
-	}
-	return res;
-}
 
-
-public String toStringFriend() {
-	String res="~";
-	if(partOfShip) {
-		res="o";
-	}
-	if(status==1) {
-		res="x";
-	}
 	return res;
 }
 
