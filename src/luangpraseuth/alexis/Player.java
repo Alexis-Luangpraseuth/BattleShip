@@ -1,12 +1,18 @@
+package luangpraseuth.alexis;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
-public class Player {
+public abstract class Player implements IPlay {
 	private List<Ship> fleet = new ArrayList<Ship>();
 	private Grid myGrid;
 	private Grid ennemyGrid;
 	private String name;
+	private int score = 0;
+	
+	public Player(Grid myGrid, Grid ennmyGrid) {
+		setMyGrid(myGrid);
+        setEnnemyGrid(ennemyGrid);
+		
+	}
 	
 	public String getName() {
 		return name;
@@ -27,6 +33,12 @@ public class Player {
 	public void setMyGrid(Grid myGrid) {
 		this.myGrid = myGrid;
 	}
+	public int getScore() {
+		return score;
+	}
+	public void riseScore() {
+		this.score += 1;
+	}
 	public Grid getEnnemyGrid() {
 		return ennemyGrid;
 	}
@@ -34,8 +46,7 @@ public class Player {
 		this.ennemyGrid = ennemyGrid;
 	}
 	
-	public Player() {
-	}
+
 	
 	
 	

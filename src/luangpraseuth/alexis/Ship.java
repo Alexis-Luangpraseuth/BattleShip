@@ -1,24 +1,14 @@
+package luangpraseuth.alexis;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Ship {
-	private List<String> coordinates = new ArrayList<String>();
 	List<Square> squares = new ArrayList<Square>();
+	String name;
 
-
-	public Ship(List<String> coordinates, List<Square> squares) {
-		this.coordinates = coordinates;
-		this.squares = squares;
-	}
-
-	
-	public List<String> getCoordinates() {
-		return coordinates;
-	}
-
-	public void setCoordinates(List<String> coordinates) {
-		this.coordinates = coordinates;
+	public Ship(String name) {
+		this.name = name;
 	}
 
 	public List<Square> getSquares() {
@@ -41,6 +31,30 @@ public class Ship {
 			Square square = squares.get(j);
 			if(!square.isHit())
 				res = false;
+		}
+		return res;
+	}
+	
+	public int getSize() {
+		int res;
+		switch (name) {
+		case "Destroyer":
+			res = 2;
+			break;
+		case "Submarine":
+			res = 3;
+			break;
+		case "Cruiser":
+			res = 3;
+			break;
+		case "Battleship":
+			res = 4;
+			break;
+		case "Carrier":
+			res = 5;
+			break;
+		default:
+			res = -1;
 		}
 		return res;
 	}

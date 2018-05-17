@@ -1,4 +1,4 @@
-
+package luangpraseuth.alexis;
 
 public class Square {
 	

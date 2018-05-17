@@ -1,9 +1,24 @@
+package luangpraseuth.alexis;
 
 
 public class Game {
  private Player activePlayer;
  private Player oppositePlayer;
  private boolean isOver = false;
+ private String gameType = "Human vs IA";
+ 
+public String getGameType() {
+	return gameType;
+}
+
+public void setGameType(String gameType) {
+	this.gameType = gameType;
+}
+
+public Game(Player activePlayer,Player oppositePlayer){
+	setActivePlayer(activePlayer);
+	setOppositePlayer(oppositePlayer);
+}
  
 public Player getActivePlayer() {
 	return activePlayer;
