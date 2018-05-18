@@ -6,8 +6,14 @@ public class Square {
 private Color color;
 // 0 = no hit    1 = hit
 private boolean hit;
+private int idBateau;
 
-
+public int getIdBateau() {
+	return idBateau;
+}
+public void setIdBateau(int idBateau) {
+	this.idBateau = idBateau;
+}
 public Color getColor() {
 	return color;
 }

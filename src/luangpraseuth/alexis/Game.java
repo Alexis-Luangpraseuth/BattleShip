@@ -37,6 +37,7 @@ public boolean isOver() {
 }
 public void setOver(boolean isOver) {
 	this.isOver = isOver;
+	activePlayer.riseScore();
 }
 
 public void switchActivePlayer() {

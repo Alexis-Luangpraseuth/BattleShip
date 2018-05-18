@@ -12,12 +12,20 @@ public class Human extends Player {
 	
 	public String shoot() {
 		String res="";
+		String target = BattleShip.reader.next();
+		//the human needs to put a correct coordinate
+		while (!Tools.isCorrectCoordinate(target) || !(Tools.isInGridCoordinate(target))) {
+			System.out.println(BattleShip.error);
+			System.out.println("Target :");
+			target = BattleShip.reader.next();
+		}
 		return res;
 	}
 	
-	public void placeFleet(List<String> fleet) {
-		for (int j = 0; j < fleet.size(); j++) {
-			String shipName = fleet.get(j);
+	public void placeFleet(List<String> fleetString) {
+		List<Ship> fleet = new ArrayList<Ship>();
+		for (int j = 0; j < fleetString.size(); j++) {
+			String shipName = fleetString.get(j);
 			boolean check = false;
 			Ship ship = new Ship(shipName);
 			while (!check) {
@@ -34,37 +42,13 @@ public class Human extends Player {
 								Grid grid = getMyGrid();
 								if (Tools.coordinatesAreAvaible(coordS, coordE, ship, grid)) {
 									check = true;
-									ship.setSquares(coordS);
-									
-									char letterStartCoord = coordS.charAt(0);
-									char letterEndCoord = coordE.charAt(0);
-									int intStartCoord = Tools.getInt(coordS);
-									int intEndCoord = Tools.getInt(coordE);
-
-									if (letterStartCoord == letterEndCoord) {
-										for (int k = intStartCoord; k <= intEndCoord; k++) {
-										
-											int lat = Tools.convertLetterToInt(letterStartCoord);
-											player.getMyGrid().getGrid()[lat][k].setColor(Color.red);
-											squares.add(player.getMyGrid().getGrid()[lat][k]);
-										}
-									} else {
-										for (char k = letterStartCoord; k <= letterEndCoord; k++) {
-											
-											int lat = Tools.convertLetterToInt(k);
-											player.getMyGrid().getGrid()[lat][intStartCoord]
-													.setColor(Color.red);
-											squares.add(player.getMyGrid().getGrid()[lat][intStartCoord]);
-										}
-									}
+									ship.setSquares(coordS,coordE,grid,j);
 									System.out.println("The ship has been placed on your battlefield: \n");
-									System.out.println(player.getMyGrid().toString("ally"));
-									ship.setSquares(squares);;
-
+									System.out.println(grid.toString("ally"));
 									fleet.add(ship);
 
 									if (j == fleet.size() - 1)
-										player.setFleet(fleet);
+										setFleet(fleet);
 								}
 							}
 
@@ -73,7 +57,7 @@ public class Human extends Player {
 
 				}
 				if (!check)
-					System.out.println(error);
+					System.out.println(BattleShip.error);
 			}
 		}
 	}

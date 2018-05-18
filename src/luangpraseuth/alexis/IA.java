@@ -15,7 +15,22 @@ private int difficulty;
 	
 	public String shoot() {
 		String res="";
+		switch (difficulty) {
+		case 1:
+			res="";
+			break;
+		case 2:
+			res ="";
+			break;
+		case 3:
+			res ="";
+			break;
+	
+		default:
+			res = "";
+		}
 		return res;
+		
 	}
 	
 	public void placeFleet(List<String> fleet) {

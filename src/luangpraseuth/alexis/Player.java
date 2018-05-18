@@ -46,6 +46,15 @@ public abstract class Player implements IPlay {
 		this.ennemyGrid = ennemyGrid;
 	}
 	
+	public boolean hasLost() {
+		boolean res = true;
+		int i = 0;
+		while(i<getFleet().size() && res) {
+			if(!getFleet().get(i).isDestroyed())
+				res = false;
+		}
+		return res;
+	}
 
 	
 	

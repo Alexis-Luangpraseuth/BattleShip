@@ -6,7 +6,7 @@ import java.util.List;
 public class Ship {
 	List<Square> squares = new ArrayList<Square>();
 	String name;
-
+	
 	public Ship(String name) {
 		this.name = name;
 	}
@@ -15,8 +15,29 @@ public class Ship {
 		return squares;
 	}
 
-	public void setSquares(List<Square> squares) {
-		this.squares = squares;
+	public void setSquares(String coordS, String coordE, Grid grid,int idBateau) {
+		char letterStartCoord = coordS.charAt(0);
+		char letterEndCoord = coordE.charAt(0);
+		int intStartCoord = Tools.getInt(coordS);
+		int intEndCoord = Tools.getInt(coordE);
+
+		if (letterStartCoord == letterEndCoord) {
+			for (int k = intStartCoord; k <= intEndCoord; k++) {
+			
+				int lat = Tools.convertLetterToInt(letterStartCoord);
+				grid.getGrid()[lat][k].setColor(Color.red);
+				grid.getGrid()[lat][k].setIdBateau(idBateau);;
+				squares.add(grid.getGrid()[lat][k]);
+			}
+		} else {
+			for (char k = letterStartCoord; k <= letterEndCoord; k++) {
+				
+				int lat = Tools.convertLetterToInt(k);
+				grid.getGrid()[lat][intStartCoord].setColor(Color.red);
+				grid.getGrid()[lat][intStartCoord].setIdBateau(idBateau);;
+				squares.add(grid.getGrid()[lat][intStartCoord]);
+			}
+		}
 	}
 
 	public boolean isHit(Square target) {
@@ -27,8 +48,10 @@ public class Ship {
 	public boolean isDestroyed() {
 		boolean res = true;
 		List<Square> squares = this.getSquares();
-		for(int j=0;j<squares.size();j++) {
-			Square square = squares.get(j);
+		int i=0;
+		
+		while(i<getSquares().size() && res) {
+			Square square = squares.get(i);
 			if(!square.isHit())
 				res = false;
 		}

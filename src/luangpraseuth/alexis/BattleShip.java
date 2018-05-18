@@ -48,15 +48,14 @@ public class BattleShip {
 				player.setName(reader.next());
 				}
 				String playerName = player.getName();
-				List<Ship> fleet = new ArrayList<Ship>();
 				System.out.println(playerName + " you are going to place your fleet");
-				List<String> fleet = new ArrayList<String>();
-				fleet.add("Destroyer");
+				List<String> fleetString = new ArrayList<String>();
+				fleetString.add("Destroyer");
 				/*
 				 * battlecrew.add("Submarine"); battlecrew.add("Cruiser");
 				 * battlecrew.add("Battleship"); battlecrew.add("Carrier");
 				 */
-				player.placeFleet(fleet);
+				player.placeFleet(fleetString);
 			
 			}
 			while (!game.isOver()) {
@@ -71,62 +70,29 @@ public class BattleShip {
 				System.out.println(oppositePlayerGrid.toString("opponent"));
 				System.out.println("Choose a target for your next attack. Exemple: 'A1'");
 				System.out.println("Target :");
-				String target = reader.next();
-				// Checking if the player did put a correct coordinate
-				boolean alreadyAttacked = true;
-				while (!Tools.isCorrectCoordinate(target) || !(Tools.isInGridCoordinate(target)) || alreadyAttacked) {
-					if (Tools.isCorrectCoordinate(target) && Tools.isInGridCoordinate(target)) {
-						int lat = Tools.convertLetterToInt(Tools.getLetter(target));
-						int longitude = Tools.getInt(target);
-						if (oppositePlayerGrid.getGrid()[lat][longitude].isHit()) {
-							System.out.println("You have already attacked this position, choose another target!");
-							System.out.println("Target :");
-							target = reader.next();
-						} else {
-							alreadyAttacked = false;
-						}
-					} else {
-						System.out.println(error);
-						System.out.println("Target :");
-						target = reader.next();
-					}
-				}
+				String target = activePlayer.shoot();
 				int lat = Tools.convertLetterToInt(Tools.getLetter(target));
 				int longitude = Tools.getInt(target);
 				Square squareAttacked = oppositePlayerGrid.getGrid()[lat][longitude];
+				boolean alreadyAttacked = false;
+				if(squareAttacked.isHit())
+					alreadyAttacked = true;
 				squareAttacked.setHit(true);
 				String res = "";
 				List<Ship> fleet = oppositePlayer.getFleet();
 				// checking if a ship as been touched
-				if (squareAttacked.getColor() == Color.red) {
+				if (squareAttacked.getColor() == Color.red && !alreadyAttacked) {
 					// We check if the ship is destroyed or not
-					int i = 0;
-					boolean shipFound = false;
-					while (i < fleet.size() && shipFound == false) {
-						Ship ship = fleet.get(i);
-						if (ship.isHit(squareAttacked)) {
-							shipFound = true;
-							if (!ship.isDestroyed())
-								res = "Hit!";
+						Ship ship = fleet.get(squareAttacked.getIdBateau());
+						res = ship.isDestroyed() ? "Sunk!" : "Hit!";
+							
 						}
-					}
-				} else {
-					res = "Missed!";
+				else {
+					res = alreadyAttacked ? "already attacked" :"Missed!";
 				}
-				if (res.equals("")) {
-					res = "Sunk!";
-					int i = 0;
-					boolean shipFound = false;
-					while (i < fleet.size() && shipFound == false) {
-						Ship ship = fleet.get(i);
-						if (!ship.isDestroyed()) {
-							shipFound = true;
-						}
-						i++;
-					}
-					if (shipFound == false) {
+				if (res.equals("Sunk!")) {
+					if(oppositePlayer.hasLost()) {
 						game.setOver(true);
-						activePlayer.riseScore();
 						winner = activePlayerName;
 					}
 
