@@ -8,11 +8,29 @@ public abstract class Player implements IPlay {
 	private String name;
 	private int score = 0;
 	
-	public Player(Grid myGrid, Grid ennmyGrid) {
+	public Player(Grid myGrid, Grid ennemyGrid) {
 		setMyGrid(myGrid);
         setEnnemyGrid(ennemyGrid);
 		
 	}
+	
+	
+	public Grid getMyGrid() {
+		return myGrid;
+	}
+
+	public void setMyGrid(Grid myGrid) {
+		this.myGrid = myGrid;
+	}
+
+	public Grid getEnnemyGrid() {
+		return ennemyGrid;
+	}
+
+	public void setEnnemyGrid(Grid ennemyGrid) {
+		this.ennemyGrid = ennemyGrid;
+	}
+
 	
 	public String getName() {
 		return name;
@@ -26,25 +44,13 @@ public abstract class Player implements IPlay {
 	public void setFleet(List<Ship> fleet) {
 		this.fleet = fleet;
 	}
-
-	public Grid getMyGrid() {
-		return myGrid;
-	}
-	public void setMyGrid(Grid myGrid) {
-		this.myGrid = myGrid;
-	}
 	public int getScore() {
 		return score;
 	}
 	public void riseScore() {
 		this.score += 1;
 	}
-	public Grid getEnnemyGrid() {
-		return ennemyGrid;
-	}
-	public void setEnnemyGrid(Grid ennemyGrid) {
-		this.ennemyGrid = ennemyGrid;
-	}
+
 	
 	public boolean hasLost() {
 		boolean res = true;
@@ -52,6 +58,7 @@ public abstract class Player implements IPlay {
 		while(i<getFleet().size() && res) {
 			if(!getFleet().get(i).isDestroyed())
 				res = false;
+			i++;
 		}
 		return res;
 	}

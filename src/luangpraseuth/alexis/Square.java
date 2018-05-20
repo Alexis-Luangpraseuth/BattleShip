@@ -1,60 +1,63 @@
 package luangpraseuth.alexis;
 
 public class Square {
-	
-// red = ship   blue = no ship   
-private Color color;
-// 0 = no hit    1 = hit
-private boolean hit;
-private int idBateau;
 
-public int getIdBateau() {
-	return idBateau;
-}
-public void setIdBateau(int idBateau) {
-	this.idBateau = idBateau;
-}
-public Color getColor() {
-	return color;
-}
-public void setColor(Color color) {
-	this.color = color;
-}
-public boolean isHit() {
-	return hit;
-}
-public void setHit(boolean hit) {
-	this.hit = hit;
-}
+	// 1=yes 0 = no
+	private boolean containsShip;
+	// 0 = no hit 1 = hit
+	private boolean hit;
+	private int idShip;
 
-public Square(Color color, boolean hit) {
-	super();
-	this.color = color;
-	this.hit = hit;
-}
-
-public String toString(String usedFor) {
-	String res ="";
-	
-	switch (usedFor) {
-	case "ally":
-		if(hit==false) {
-			res = color == Color.red? "S":"W";
-		}
-		else if(hit==true) {
-			res = color == Color.red? "H":"M";
-		}
-		break;
-	case "opponent":
-		if(hit==false) {
-			res = "?";
-		}
-		else if(hit==true) {
-			res = color == Color.red? "H":"M";
-		}
-		break;
+	public int getIdShip() {
+		return idShip;
 	}
-	return res;
-}
+
+	public void setIdShip(int idShip) {
+		this.idShip = idShip;
+	}
+
+	public boolean containsShip() {
+		return containsShip;
+	}
+
+	public void setContainsShip(boolean containsShip) {
+		this.containsShip = containsShip;
+	}
+
+	public boolean isHit() {
+		return hit;
+	}
+
+	public void setHit(boolean hit) {
+		this.hit = hit;
+	}
+
+	public Square(boolean containsShip, boolean hit) {
+		super();
+		this.containsShip = containsShip;
+		this.hit = hit;
+	}
+
+	public String toString(String usedFor) {
+		String res = "";
+
+		switch (usedFor) {
+		case "ally":
+			if (hit == false) {
+				res = containsShip() ? "S" : "W";
+			} else if (hit == true) {
+				res = containsShip() ? "H" : "M";
+			}
+			break;
+		case "opponent":
+			if (hit == false) {
+				res = "?";
+			} else if (hit == true) {
+				res = containsShip() ? "H" : "M";
+			}
+			break;
+		}
+		return res;
+	}
 
 }

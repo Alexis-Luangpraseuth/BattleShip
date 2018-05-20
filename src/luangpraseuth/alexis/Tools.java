@@ -1,10 +1,34 @@
 package luangpraseuth.alexis;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Tools {
 	public static boolean isCorrectCoordinate(String coordinate) {
 		boolean res = coordinate.matches("^[A-Z][0-9]{1,2}$");
 		if (res == false)
-			BattleShip.error = "The coordinate is not correctly wrote, please try again and be careful, exemple of coordinate : 'A1'";
+			Battleship.error = "The coordinate is not in the correct format, please try again and be careful, exemple of coordinate : 'A1'";
+		return res;
+	}
+	
+	public static boolean alreadyHitCoordinate(Grid grid,String coordinate) {
+		int longitude = convertLetterToInt(getLetter(coordinate));
+		int latitude = getInt(coordinate);
+		return grid.getGrid()[longitude][latitude].isHit();
+	}
+	
+	public static boolean isCorrectResponseGameType(String coordinate) {
+		boolean res = coordinate.matches("^[1-2]{1}$");
+		if (res == false)
+			Battleship.error = "The response is not in the correct format, please try again and be careful";
+		return res;
+	}
+	
+	public static boolean isCorrectResponseDifficulty(String coordinate) {
+		boolean res = coordinate.matches("^[1-3]{1}$");
+		if (res == false)
+			Battleship.error = "The response is not in the correct format, please try again and be careful";
 		return res;
 	}
 
@@ -23,10 +47,10 @@ public class Tools {
 		boolean res = false;
 		int longitude = convertLetterToInt(getLetter(coordinate));
 		int latitude = getInt(coordinate);
-		if (longitude >= 0 && longitude < BattleShip.coordMax && latitude >= 0 && latitude < BattleShip.coordMax)
+		if (longitude >= 0 && longitude < Battleship.coordMax && latitude >= 0 && latitude < Battleship.coordMax)
 			res = true;
 		if (res == false)
-			BattleShip.error = "The coordinate is out of the battlefield";
+			Battleship.error = "The coordinate is out of the battlefield";
 		return res;
 	}
 
@@ -38,34 +62,34 @@ public class Tools {
 		int endInt = getInt(endCoord);
 		int size = ship.getSize();
 		if (startLetter == endLetter) {
-			if (startInt == endInt - size || startInt == endInt + size) {
+			if (startInt == endInt - (size-1) || startInt == endInt + (size-1)) {
 				for (int k = startInt; k <= endInt; k++) {
 					int lat = convertLetterToInt(startLetter);
 					Square square = grid.getGrid()[lat][k];
-					if (square.getColor() == Color.red) {
+					if (square.containsShip()) {
 						res = false;
-						BattleShip.error = "One of those positions is already taken by another ship";
+						Battleship.error = "One of those positions is already taken by another ship";
 					}
 				}
 			} else {
-				BattleShip.error = "You did not put the correct size for this ship";
+				Battleship.error = "You did not put the correct size for this ship";
 				res = false;
 			}
 		} else if (startInt == endInt) {
-			if (startLetter == endLetter - size || startLetter == endLetter + size) {
+			if (startLetter == endLetter - (size-1) || startLetter == endLetter + (size-1)) {
 				for (char k = startLetter; k <= endLetter; k++) {
 					int lat = convertLetterToInt(k);
 					Square square = grid.getGrid()[lat][startInt];
-					if (square.getColor() == Color.red)
+					if (square.containsShip())
 						res = false;
 				}
 			} else {
-				BattleShip.error = "You did not put the correct size for this ship";
+				Battleship.error = "You did not put the correct size for this ship";
 				res = false;
 			}
 		} else {
 			res = false;
-			BattleShip.error = "You did not put the correct size for this ship, or it is not placed vertically/horizontally";
+			Battleship.error = "You did not put the correct size for this ship, or it is not placed vertically/horizontally";
 		}
 		return res;
 	}

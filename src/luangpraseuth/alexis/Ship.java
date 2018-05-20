@@ -10,7 +10,10 @@ public class Ship {
 	public Ship(String name) {
 		this.name = name;
 	}
-
+	
+	public String getName() {
+		return this.name;
+	}
 	public List<Square> getSquares() {
 		return squares;
 	}
@@ -25,16 +28,16 @@ public class Ship {
 			for (int k = intStartCoord; k <= intEndCoord; k++) {
 			
 				int lat = Tools.convertLetterToInt(letterStartCoord);
-				grid.getGrid()[lat][k].setColor(Color.red);
-				grid.getGrid()[lat][k].setIdBateau(idBateau);;
+				grid.getGrid()[lat][k].setContainsShip(true);;
+				grid.getGrid()[lat][k].setIdShip(idBateau);;
 				squares.add(grid.getGrid()[lat][k]);
 			}
 		} else {
 			for (char k = letterStartCoord; k <= letterEndCoord; k++) {
 				
 				int lat = Tools.convertLetterToInt(k);
-				grid.getGrid()[lat][intStartCoord].setColor(Color.red);
-				grid.getGrid()[lat][intStartCoord].setIdBateau(idBateau);;
+				grid.getGrid()[lat][intStartCoord].setContainsShip(true);;
+				grid.getGrid()[lat][intStartCoord].setIdShip(idBateau);;
 				squares.add(grid.getGrid()[lat][intStartCoord]);
 			}
 		}
@@ -54,12 +57,14 @@ public class Ship {
 			Square square = squares.get(i);
 			if(!square.isHit())
 				res = false;
+			i++;
 		}
+		
 		return res;
 	}
 	
 	public int getSize() {
-		int res;
+		int res = -1;
 		switch (name) {
 		case "Destroyer":
 			res = 2;
@@ -76,8 +81,6 @@ public class Ship {
 		case "Carrier":
 			res = 5;
 			break;
-		default:
-			res = -1;
 		}
 		return res;
 	}
