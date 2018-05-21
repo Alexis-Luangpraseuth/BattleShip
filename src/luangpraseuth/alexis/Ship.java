@@ -4,8 +4,8 @@ import java.util.List;
 
 
 public class Ship {
-	List<Square> squares = new ArrayList<Square>();
-	String name;
+	private List<Square> squares = new ArrayList<Square>();
+	 private String name;
 	
 	public Ship(String name) {
 		this.name = name;
@@ -17,12 +17,14 @@ public class Ship {
 	public List<Square> getSquares() {
 		return squares;
 	}
-
+	
+	//this method adds squares to the ship, and give the shipId to the squares. 
 	public void setSquares(String coordS, String coordE, Grid grid,int idBateau) {
 		char letterStartCoord = coordS.charAt(0);
 		char letterEndCoord = coordE.charAt(0);
 		int intStartCoord = Tools.getInt(coordS);
 		int intEndCoord = Tools.getInt(coordE);
+		squares = this.getSquares();
 
 		if (letterStartCoord == letterEndCoord) {
 			for (int k = intStartCoord; k <= intEndCoord; k++) {

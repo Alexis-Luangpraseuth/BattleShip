@@ -128,7 +128,7 @@ public class HardAI extends AI {
 			if (!check) {
 				setTarget(false);
 				while (!check) {
-					coordinate = super.randomCoordinate(Battleship.coordMax - 1);
+					coordinate = Tools.randomCoordinate(Battleship.coordMax - 1);
 					Grid ennemyGrid = super.getEnnemyGrid();
 					check = !(Tools.alreadyHitCoordinate(ennemyGrid, coordinate));
 

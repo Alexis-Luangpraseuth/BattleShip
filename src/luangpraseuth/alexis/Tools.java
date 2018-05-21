@@ -1,15 +1,19 @@
 package luangpraseuth.alexis;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class Tools {
 	public static boolean isCorrectCoordinate(String coordinate) {
 		boolean res = coordinate.matches("^[A-Z][0-9]{1,2}$");
 		if (res == false)
 			Battleship.error = "The coordinate is not in the correct format, please try again and be careful, exemple of coordinate : 'A1'";
 		return res;
+	}
+	
+	
+	public static String randomCoordinate(int maxRange) {
+		char randomX = (char) ((int) (Math.random() * maxRange) + 65);
+		int randomY = (int) (Math.random() * maxRange) + 1;
+		String coord = randomX + Integer.toString(randomY);
+		return coord;
 	}
 	
 	public static boolean alreadyHitCoordinate(Grid grid,String coordinate) {

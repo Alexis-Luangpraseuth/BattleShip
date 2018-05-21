@@ -63,7 +63,7 @@ public class Game {
 				player.setName(Battleship.reader.next());
 			}
 			String playerName = player.getName();
-			//System.out.println(playerName + " you are going to place your fleet");
+			System.out.println(playerName + " you are going to place your fleet");
 			List<String> fleetString = new ArrayList<String>();
 			fleetString.add("Carrier");
 			fleetString.add("Battleship");

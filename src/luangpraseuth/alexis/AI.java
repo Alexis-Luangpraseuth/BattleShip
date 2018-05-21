@@ -40,11 +40,6 @@ public abstract class AI extends Player {
 
 	}
 	
-	public String randomCoordinate(int maxRange) {
-		char randomX = (char) ((int) (Math.random() * maxRange) + 65);
-		int randomY = (int) (Math.random() * maxRange) + 1;
-		String coord = randomX + Integer.toString(randomY);
-		return coord;
-	}
+
 
 }

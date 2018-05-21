@@ -12,7 +12,7 @@ public class MediumAI extends AI {
 		String coordinate ="";
 		boolean check = false;
 		while(!check) {
-		 coordinate =super.randomCoordinate(Battleship.coordMax -1);
+		 coordinate =Tools.randomCoordinate(Battleship.coordMax -1);
 		 Grid ennemyGrid = super.getEnnemyGrid();
 		 check = !(Tools.alreadyHitCoordinate(ennemyGrid, coordinate));
 			

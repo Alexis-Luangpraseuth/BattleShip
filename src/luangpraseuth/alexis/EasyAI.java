@@ -10,7 +10,7 @@ public class EasyAI extends AI {
 
 	@Override
 	public String shoot() {
-		return randomCoordinate(Battleship.coordMax -1);
+		return Tools.randomCoordinate(Battleship.coordMax -1);
 	}
 
 }

@@ -10,6 +10,7 @@ public class TestIA {
 	public static void main(String[] args) throws IOException {
 		String res = "AI Name; score; AI Name2;score2\n";
 		boolean matchContinue = true;
+		//the programme stops when the 300 games between AI have been played, each 100 games, we switch players.
 		int i = 300;
 		while (i > 0) {
 			Grid gridPlayer1 = new Grid();
@@ -59,7 +60,7 @@ public class TestIA {
 		}
 
 	      FileWriter writer = null;
-
+	 //creating the file ai_proof.csv in our current directory, the file contains the result of the matches between the AI.
 	 try {
 
 	     writer = new FileWriter("ai_proof.csv");

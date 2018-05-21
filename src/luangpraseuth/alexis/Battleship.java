@@ -14,8 +14,9 @@ public class Battleship {
 	
 		boolean matchContinue = true;
 		boolean newMatch = true;
-		
+		//the programme is continuing until players don't want a new match.
 		while (newMatch) {
+		//creating players grid
 		Grid gridPlayer1 = new Grid();
 		Grid gridPlayer2 = new Grid();
 		boolean check = false;
@@ -49,10 +50,12 @@ public class Battleship {
 			else
 				player2 = new HardAI(gridPlayer2, gridPlayer1);
 		}
-		
+			//a match means that the players don't change, and every game played counts for the score of the players.
 			while (matchContinue) {
 				Game game = new Game(player1, player2);
+				//the setup is the placement of the fleet for each player.
 				game.setup();
+				//the method play is running until we have a winner.
 				game.play();
 				System.out.println("Congratulation " + game.getActivePlayer().getName()
 						+ " the game is over, you have destroyed the whole fleet of your opponent");
