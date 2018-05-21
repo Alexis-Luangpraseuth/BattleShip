@@ -7,6 +7,7 @@ public class Human extends Player {
 	public Human(Grid myGrid, Grid ennmyGrid) {
 		super(myGrid, ennmyGrid);
 	}
+	
 
 	public String shoot() {
 		System.out.println("This is your battlefield :");
@@ -34,7 +35,7 @@ public class Human extends Player {
 			if (Tools.isCorrectCoordinate(coordS)) {
 				if (Tools.isInGridCoordinate(coordS)) {
 					System.out.println("give end coordinates for your " + ship.getName() + "( " + ship.getSize()
-							+ " squares), exemple: 'A3'");
+							+ " squares), exemple: 'A"+ ship.getSize() +"'");
 					String coordE = Battleship.reader.next();
 					if (Tools.isCorrectCoordinate(coordE)) {
 						if (Tools.isInGridCoordinate(coordE)) {

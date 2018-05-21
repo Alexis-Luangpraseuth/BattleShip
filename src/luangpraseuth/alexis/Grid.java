@@ -37,7 +37,7 @@ public Grid() {
 		}
  }
 
-
+//the parameter is used to differentiate the display of the grid between the players.
 public String toString(String usedFor) {
 	String res ="";
 	res += "S=ship,~=water,?=unknown,H=shot hit,M= shot missed \n \n";
