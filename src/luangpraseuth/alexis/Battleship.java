@@ -14,7 +14,7 @@ public class Battleship {
 	
 		boolean matchContinue = true;
 		boolean newMatch = true;
-		//the programme is continuing until players don't want a new match.
+		//the program is continuing until players don't want a new match.
 		while (newMatch) {
 		//creating players grid
 		Grid gridPlayer1 = new Grid();
