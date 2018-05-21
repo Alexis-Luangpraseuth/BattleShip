@@ -44,7 +44,7 @@ public class Square {
 		switch (usedFor) {
 		case "ally":
 			if (hit == false) {
-				res = containsShip() ? "S" : "W";
+				res = containsShip() ? "S" : "~";
 			} else if (hit == true) {
 				res = containsShip() ? "H" : "M";
 			}

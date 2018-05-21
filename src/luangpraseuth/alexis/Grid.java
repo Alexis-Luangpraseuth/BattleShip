@@ -40,7 +40,7 @@ public Grid() {
 
 public String toString(String usedFor) {
 	String res ="";
-	res += "S=ship,W=water,?=unknown,H=shot hit,M= shot miss \n \n";
+	res += "S=ship,~=water,?=unknown,H=shot hit,M= shot missed \n \n";
 	res += "   ";
 	char start = 'A';
 	for(int i=0;i<Battleship.coordMax;i++) {
